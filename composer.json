@@ -1,7 +1,10 @@
 {
   "name": "sashamelva/privatcoollib",
+  "description": "Simple CBR currency converter. Testing/studying purposes (used for trying out packagist service)",
+  "license": "GPL-3.0-or-later",
+  "homepage": "https://github.com/SashaMelva/privatcoollib",
   "require": {
-    "ext-iconv": "*",
+    "php": ">=8.0",
     "ext-simplexml": "*"
   },
   "autoload": {
