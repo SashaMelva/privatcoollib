@@ -1,0 +1,11 @@
+{
+  "require": {
+    "ext-iconv": "*",
+    "ext-simplexml": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "src"
+    }
+  }
+}
