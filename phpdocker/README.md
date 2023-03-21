@@ -28,17 +28,17 @@ containers, then leave them running in the background.
 You can access your application via **`localhost`**. Mailhog and nginx both respond to any hostname, in case you want to
 add your own hostname on your `/etc/hosts`
 
-Service|Address outside containers
--------|--------------------------
-Webserver|[localhost:8080](http://localhost:8080)
+| Service   | Address outside containers              |
+|-----------|-----------------------------------------|
+| Webserver | [localhost:8080](http://localhost:8080) |
 
 ## Hosts within your environment ##
 
 You'll need to configure your application to use any services you enabled:
 
-Service|Hostname|Port number
-------|---------|-----------
-php-fpm|php-fpm|9000
+| Service | Hostname | Port number |
+|---------|----------|-------------|
+| php-fpm | php-fpm  | 9000        |
 
 # Docker compose cheatsheet #
 
