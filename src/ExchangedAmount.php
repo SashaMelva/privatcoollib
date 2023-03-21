@@ -2,8 +2,6 @@
 
 namespace PrivatCoolLib;
 
-use PrivatCoolLib\ExchangeRates;
-
 class ExchangedAmount
 {
     public function __construct(
