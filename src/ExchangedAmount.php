@@ -1,8 +1,8 @@
 <?php
 
-namespace App;
+namespace PrivatCoolLib;
 
-use App\ExchangeRates;
+use PrivatCoolLib\ExchangeRates;
 
 class ExchangedAmount
 {

@@ -3,7 +3,7 @@
         'name' => 'sashamelva/privatcoollib',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '0af5e35bbe49847c6872aa78ef18db00b74d8f9a',
+        'reference' => '8158d96411798aba85897ea9fce754edb99c25ac',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'sashamelva/privatcoollib' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '0af5e35bbe49847c6872aa78ef18db00b74d8f9a',
+            'reference' => '8158d96411798aba85897ea9fce754edb99c25ac',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
