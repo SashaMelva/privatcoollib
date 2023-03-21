@@ -1,4 +1,5 @@
 {
+  "name": "sashamelva/privatcoollib",
   "require": {
     "ext-iconv": "*",
     "ext-simplexml": "*"
