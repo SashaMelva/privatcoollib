@@ -1,8 +1,6 @@
 <?php
-declare(strict_types=1);
-
 namespace PrivatCoolLib;
-class CurrencyConverter
+class ExchangedAmount
 {
     public function __construct(
         private float  $amount,
@@ -11,16 +9,10 @@ class CurrencyConverter
     {
     }
 
-
-    public function convert(): float
+    public function toDecimal(): float
     {
         $result = ($this->exchange->getRateConvertedToCurrencyToRuble() * $this->amount) / $this->exchange->getRateConvertingCurrencyToRuble();
 
-        return round($result, 2);
-    }
-
-    public function __toString(): string
-    {
-        return (string)$this->convert();
+        return round($result, 1);
     }
 }

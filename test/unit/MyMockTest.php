@@ -1,30 +1,73 @@
 <?php declare(strict_types=1);
 
-namespace PrivatCoolLib\test;
+namespace test\unit;
 
-use PrivatCoolLib\CurrencyConverter;
-use PrivatCoolLib\ExchangeRates;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 
-class MyTest extends TestCase
+class MyMockTest extends TestCase
 {
+    /**
+     * @throws GuzzleException
+     */
     public function testToDecimal()
     {
-        $mockDataFetcher = $this->getMockBuilder(ExchangeRates::class)
-            ->setMethods(['getExchangeRates'])
-            ->getMock();
-        $mockDataFetcher->expects($this->once())
-            ->method('getExchangeRates')
-            ->with('UAH', 'USD')
-            ->willReturn($this->testData());
-        $exchange = new CurrencyConverter('AUD', 'USD', 100, $this->testData());
-        $this->assertEquals(66.909887118216, $exchange->round());
+        $mock = new MockHandler([
+            new Response(200, ['X-Foo' => 'Bar'], $this->testData()),
+            new Response(202, ['Content-Length' => 0]),
+            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+        ]);
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(['handler' => $handlerStack]);
+
+
+        $response = $client->request('GET', '/');
+        echo $response->getStatusCode();
+
+        echo $response->getBody();
+
+        echo $client->request('GET', '/')->getStatusCode();
+
+        $mock->reset();
+        $mock->append(new Response(201));
+
+
+        echo $client->request('GET', '/')->getStatusCode();
+
+//        $mockDataFetcher = $this->getMockBuilder(ExchangeDataFetcher::class)
+//            ->setMethods(['getActualCurrenciesData'])
+//            ->getMock();
+//
+//        $mockDataFetcher->expects($this->once())
+//            ->method('getActualCurrenciesData')
+//            ->with('UAH', 'USD')
+//            ->willReturn([
+//                /*тут бот вставил необходимый формат */
+//            ]);
+
+//        $exchange = new ExchangedAmount('UAH', 'USD', 100, $mockDataFetcher);
+//        $this->assertEquals(3.84, $exchange->toDecimal());
+//        $mockDataFetcher = $this->getMockBuilder(ExchangeRates::class)
+//            ->setMethods(['getExchangeRates'])
+//            ->getMock();
+//        $mockDataFetcher->expects($this->once())
+//            ->method('getExchangeRates')
+//            ->with('UAH', 'USD')
+//            ->willReturn($this->testData());
+//        $exchange = new ExchangedAmount('AUD', 'USD', 100, $this->testData());
+//        $this->assertEquals(66.909887118216, $exchange->round());
     }
 
     public function testData(): array
     {
-        return ['data' =>
+        return
             [
                 "disclaimer" => "https://www.cbr-xml-daily.ru/#terms",
                 "date" => "2023-03-22",
@@ -75,7 +118,6 @@ class MyTest extends TestCase
                     "KRW" => 17.06464257,
                     "JPY" => 1.7257238
                 ],
-            ]
-        ];
+            ];
     }
 }

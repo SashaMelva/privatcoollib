@@ -2,20 +2,27 @@
 
 namespace PrivatCoolLib;
 
-class RatesFromCbr implements ExchangeInterface
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
+
+class RatesFromBank implements ExchangeInterface
 {
-    private array $exchangeRates;
+    private mixed $exchangeRates;
 
     public function __construct(
         private string $convertingCurrency,
         private string $convertedToCurrency,
+        private Client $guzzleClient,
     )
     {
     }
 
+    /**
+     * @throws GuzzleException
+     */
     public function getRateConvertingCurrencyToRuble(): float
     {
-        $rateConvertingCurrencyToRuble = $this->getExchangeRates()['rates'][$this->convertingCurrency] ?? null;
+        $rateConvertingCurrencyToRuble = $this->getExchangeRates()[$this->convertingCurrency] ?? null;
 
         if (is_null($rateConvertingCurrencyToRuble)) {
             throw new \InvalidArgumentException("Wrong currency name provided: '$rateConvertingCurrencyToRuble'");
@@ -24,9 +31,12 @@ class RatesFromCbr implements ExchangeInterface
         return $rateConvertingCurrencyToRuble;
     }
 
+    /**
+     * @throws GuzzleException
+     */
     public function getRateConvertedToCurrencyToRuble(): float
     {
-        $rateConvertedToCurrencyToRuble = $this->getExchangeRates()['rates'][$this->convertedToCurrency] ?? null;
+        $rateConvertedToCurrencyToRuble = $this->getExchangeRates()[$this->convertedToCurrency] ?? null;
 
         if (is_null($rateConvertedToCurrencyToRuble)) {
             throw new \InvalidArgumentException("Wrong currency name provided: '$rateConvertedToCurrencyToRuble'");
@@ -36,15 +46,16 @@ class RatesFromCbr implements ExchangeInterface
     }
 
 
-    private function getExchangeRates(): array
+    /**
+     * @throws GuzzleException
+     */
+    public function getExchangeRates()
     {
-        if (!property_exists($this, 'exchangeRates')) {
-            return $this->exchangeRates;
-        }
+        $response = $this->guzzleClient->get("https://www.cbr-xml-daily.ru/latest.js");
 
-        $url = 'https://www.cbr-xml-daily.ru/latest.js';
-        $response = file_get_contents($url);
+        $results  = json_decode($response->getBody(), true);
 
-        return $this->exchangeRates = json_decode($response, true);
+        return $results['rates'];
+
     }
 }
