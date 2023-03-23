@@ -7,7 +7,7 @@ use GuzzleHttp\Exception\GuzzleException;
 
 class RatesFromBank implements ExchangeInterface
 {
-    private mixed $exchangeRates;
+    private array $exchangeRates;
 
     public function __construct(
         private string $convertingCurrency,
@@ -51,11 +51,13 @@ class RatesFromBank implements ExchangeInterface
      */
     public function getExchangeRates()
     {
+        if (isset($this->exchangeRates)) {
+            return $this->exchangeRates;
+        }
+
         $response = $this->guzzleClient->get("https://www.cbr-xml-daily.ru/latest.js");
 
-        $results  = json_decode($response->getBody(), true);
-
-        return $results['rates'];
-
+        $results = json_decode($response->getBody(), true);
+        return $this->exchangeRates = $results['rates'];
     }
 }

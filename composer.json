@@ -16,7 +16,8 @@
   },
   "autoload": {
     "psr-4": {
-      "PrivatCoolLib\\": "src"
+      "PrivatCoolLib\\": "src",
+      "tests\\": "tests"
     }
   }
 }
