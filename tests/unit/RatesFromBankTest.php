@@ -25,19 +25,40 @@ class RatesFromBankTest extends TestCase
     }
 
     /**
+     * @dataProvider dataProviderForExceptionsRateConvertingCurrencyToRuble
+     * @throws GuzzleException
+     */
+    public function testForExceptionsRateConvertingCurrencyToRuble(array $case): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        (new RatesFromBank (
+            $case[0],
+            $case[1],
+            (new FakeGuzzleClient)->getFakeGuzzleClient()
+        ))->getRateConvertingCurrencyToRuble();
+    }
+
+    public function dataProviderForExceptionsRateConvertingCurrencyToRuble(): array
+    {
+        return [
+            [["", "UAH"]],
+            [["000", "UAH"]],
+            [["QWQW", "UAH"]],
+            [[null, "UAH"]],
+        ];
+    }
+
+    /**
      * @throws GuzzleException
      */
     public function testGetInvalidRateConvertingCurrencyToRuble()
     {
-        $sut = new RatesFromBank (
-            "efsd",
+        $this->expectException(\InvalidArgumentException::class);
+        (new RatesFromBank (
+            null,
             "UAH",
             (new FakeGuzzleClient)->getFakeGuzzleClient()
-        );
-        $this->assertEquals(
-            0,
-            $sut->getRateConvertingCurrencyToRuble()
-        );
+        ))->getRateConvertingCurrencyToRuble();
     }
 
     /**
@@ -45,11 +66,7 @@ class RatesFromBankTest extends TestCase
      */
     public function testGetRateConvertedToCurrencyToRuble(): void
     {
-        $sut = new RatesFromBank (
-            "USD",
-            "HKD",
-            (new FakeGuzzleClient)->getFakeGuzzleClient()
-        );
+        $sut = new RatesFromBank ("USD", "HKD", (new FakeGuzzleClient)->getFakeGuzzleClient());
         $this->assertEquals(
             0.101798266,
             $sut->getRateConvertedToCurrencyToRuble()
@@ -58,17 +75,25 @@ class RatesFromBankTest extends TestCase
 
     /**
      * @throws GuzzleException
+     * @dataProvider dataProviderForExceptionsRateConvertedToCurrencyToRuble
      */
-    public function testGetNullRateConvertedToCurrencyToRuble(): void
+    public function testForExceptionsRateConvertedToCurrencyToRuble(array $case): void
     {
-        $sut = new RatesFromBank (
-            "USD",
-            null,
+        $this->expectException(\InvalidArgumentException::class);
+        (new RatesFromBank (
+            $case[0],
+            $case[1],
             (new FakeGuzzleClient)->getFakeGuzzleClient()
-        );
-        $this->assertEquals(
-            0,
-            $sut->getRateConvertedToCurrencyToRuble()
-        );
+        ))->getRateConvertedToCurrencyToRuble();
+    }
+
+    public function dataProviderForExceptionsRateConvertedToCurrencyToRuble(): array
+    {
+        return [
+            [["UAH", ""]],
+            [["UAH", "222"]],
+            [["UAH", "QWWQW"]],
+            [["UAH", null]],
+        ];
     }
 }

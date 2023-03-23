@@ -11,12 +11,12 @@ try {
     var_dump(
         (
         new ExchangedAmount(
-            100,
+            "sfsd",
             new RatesFromBank ("USD", "UAH", $guzzelClient)
         )
         )->toDecimal()
     );
-} catch (InvalidArgumentException $e) {
+} catch (\InvalidArgumentException $e) {
     echo 'При выполнение привело к Exception:' . $e->getMessage();
 }
 

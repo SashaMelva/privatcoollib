@@ -10,8 +10,8 @@ class RatesFromBank implements ExchangeInterface
     private array $exchangeRates;
 
     public function __construct(
-        private string $convertingCurrency,
-        private string $convertedToCurrency,
+        private ?string $convertingCurrency,
+        private ?string $convertedToCurrency,
         private Client $guzzleClient,
     )
     {

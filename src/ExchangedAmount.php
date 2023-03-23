@@ -3,7 +3,7 @@ namespace PrivatCoolLib;
 class ExchangedAmount
 {
     public function __construct(
-        private float  $amount,
+        private mixed $amount,
         private ExchangeInterface $exchange
     )
     {
@@ -11,8 +11,12 @@ class ExchangedAmount
 
     public function toDecimal(): float
     {
+        if (is_null($this->amount) || gettype($this->amount) != "double") {
+            throw new \InvalidArgumentException("Wrong currency name provided: '$this->amount'");
+        }
+
         $result = ($this->exchange->getRateConvertedToCurrencyToRuble() * $this->amount) / $this->exchange->getRateConvertingCurrencyToRuble();
 
-        return round($result, 1);
+        return round($result, 2);
     }
 }
