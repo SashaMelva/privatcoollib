@@ -8,16 +8,19 @@ use PrivatCoolLib\RatesFromBank;
 
 class ExchangedAmountTest extends TestCase
 {
-    public function testToDecimal(): void
+    /**
+    * @dataProvider dataProviderToDecimal
+     */
+    public function testToDecimal(array $catch): void
     {
         $this->assertEquals(
-            3692.7,
+            $catch[0],
             (
             new ExchangedAmount(
-                100,
+                $catch[1],
                 new RatesFromBank(
-                    "USD",
-                    "UAH",
+                    $catch[2],
+                    $catch[3],
                     (new FakeGuzzleClient)->getFakeGuzzleClient()
                 )
             )
@@ -25,12 +28,22 @@ class ExchangedAmountTest extends TestCase
         );
     }
 
+    public function dataProviderToDecimal(): array
+    {
+        return [
+            [[3692.68, 100, "USD", "UAH"]],
+            [[139.92, 1000, "JPY", "ZAR"]],
+            [[539.05, 500, "EUR", "USD"]]
+        ];
+    }
+
+
     /**
     * @dataProvider dataProviderForExceptionsToDecimal
      */
     public function testForExceptionsToDecimal(array $case): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException($case[1]);
 
         (new ExchangedAmount(
             $case[0],
@@ -45,9 +58,9 @@ class ExchangedAmountTest extends TestCase
     public function dataProviderForExceptionsToDecimal(): array
     {
         return [
-            [[""]],
-            [["sdfse"]],
-            [[null]],
+            [["", \TypeError::class]],
+            [["sdfse", \TypeError::class]],
+            [[null, \TypeError::class]],
         ];
     }
 }

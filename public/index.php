@@ -11,8 +11,8 @@ try {
     var_dump(
         (
         new ExchangedAmount(
-            "sfsd",
-            new RatesFromBank ("USD", "UAH", $guzzelClient)
+            500,
+            new RatesFromBank ("EUR", "USD", $guzzelClient)
         )
         )->toDecimal()
     );

@@ -1,9 +1,10 @@
 <?php
+
 namespace PrivatCoolLib;
 class ExchangedAmount
 {
     public function __construct(
-        private mixed $amount,
+        private float             $amount,
         private ExchangeInterface $exchange
     )
     {
@@ -11,7 +12,7 @@ class ExchangedAmount
 
     public function toDecimal(): float
     {
-        if (is_null($this->amount) || gettype($this->amount) != "double") {
+        if (is_null($this->amount)) {
             throw new \InvalidArgumentException("Wrong currency name provided: '$this->amount'");
         }
 

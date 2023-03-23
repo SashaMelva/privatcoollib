@@ -10,19 +10,30 @@ class RatesFromBankTest extends TestCase
 {
     /**
      * @throws GuzzleException
+     * @dataProvider dataProviderGetRateConvertingCurrencyToRuble
      */
-    public function testGetRateConvertingCurrencyToRuble()
+    public function testGetRateConvertingCurrencyToRuble(array $catch): void
     {
         $sut = new RatesFromBank (
-            "AUD",
-            "UAH",
+            $catch[0],
+            $catch[1],
             (new FakeGuzzleClient)->getFakeGuzzleClient()
         );
         $this->assertEquals(
-            0.01940914675,
+            $catch[2],
             $sut->getRateConvertingCurrencyToRuble()
         );
     }
+
+    public function dataProviderGetRateConvertingCurrencyToRuble(): array
+    {
+        return [
+            [["AUD", "UAH", 0.01940914675]],
+            [["KZT", "UAH", 6.0080989]],
+            [["PLN", "UAH", 0.0564088968]],
+        ];
+    }
+
 
     /**
      * @dataProvider dataProviderForExceptionsRateConvertingCurrencyToRuble
@@ -48,29 +59,26 @@ class RatesFromBankTest extends TestCase
         ];
     }
 
-    /**
-     * @throws GuzzleException
-     */
-    public function testGetInvalidRateConvertingCurrencyToRuble()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        (new RatesFromBank (
-            null,
-            "UAH",
-            (new FakeGuzzleClient)->getFakeGuzzleClient()
-        ))->getRateConvertingCurrencyToRuble();
-    }
 
     /**
      * @throws GuzzleException
+     * @dataProvider dataProviderGetInvalidRateConvertingCurrencyToRuble
      */
-    public function testGetRateConvertedToCurrencyToRuble(): void
+    public function testGetRateConvertedToCurrencyToRuble(array $catch): void
     {
-        $sut = new RatesFromBank ("USD", "HKD", (new FakeGuzzleClient)->getFakeGuzzleClient());
+        $sut = new RatesFromBank ($catch[0], $catch[1], (new FakeGuzzleClient)->getFakeGuzzleClient());
         $this->assertEquals(
-            0.101798266,
+            $catch[2],
             $sut->getRateConvertedToCurrencyToRuble()
         );
+    }
+    public function dataProviderGetInvalidRateConvertingCurrencyToRuble() :array
+    {
+        return [
+            [["USD", "HKD", 0.101798266]],
+            [["USD", "SGD", 0.01737094]],
+            [["USD", "RSD", 1.41522985]]
+        ];
     }
 
     /**
