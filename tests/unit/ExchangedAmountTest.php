@@ -16,14 +16,14 @@ class ExchangedAmountTest extends TestCase
         $this->assertEquals(
             $catch[0],
             (
-            new ExchangedAmount(
-                $catch[1],
-                new RatesFromBank(
-                    $catch[2],
-                    $catch[3],
-                    (new FakeGuzzleClient)->getFakeGuzzleClient()
+                new ExchangedAmount(
+                    $catch[1],
+                    new RatesFromBank(
+                        $catch[2],
+                        $catch[3],
+                        (new FakeGuzzleClient)->getFakeGuzzleClient()
+                    )
                 )
-            )
             )->toDecimal()
         );
     }

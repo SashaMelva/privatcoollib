@@ -1,0 +1,5 @@
+//Запуск unit тестов
+ vendor/bin/phpunit --configuration phpunit.xml --testsuite unit
+
+ //Запуск integration тестов
+ vendor/bin/phpunit --configuration phpunit.xml --testsuite integration

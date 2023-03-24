@@ -19,4 +19,3 @@ try {
 } catch (\InvalidArgumentException $e) {
     echo 'При выполнение привело к Exception:' . $e->getMessage();
 }
-
