@@ -4,7 +4,7 @@ namespace PrivatCoolLib;
 class ExchangedAmount
 {
     public function __construct(
-        private float             $amount,
+        private ?float             $amount,
         private ExchangeInterface $exchange
     )
     {
@@ -17,7 +17,6 @@ class ExchangedAmount
         }
 
         $result = ($this->exchange->getRateConvertedToCurrencyToRuble() * $this->amount) / $this->exchange->getRateConvertingCurrencyToRuble();
-
         return round($result, 2);
     }
 }

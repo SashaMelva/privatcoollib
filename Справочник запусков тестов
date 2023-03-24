@@ -3,3 +3,10 @@
 
  //Запуск integration тестов
  vendor/bin/phpunit --configuration phpunit.xml --testsuite integration
+
+ //Запуск контейнера
+ docker exec -it privatcoollib-php-fpm-1 bash
+ //Просмотр покрытия кода тестами
+XDEBUG_MODE=coverage ./vendor/bin/phpunit --coverage-text
+
+XDEBUG_MODE=coverage ./vendor/bin/phpunit --coverage-html ./tests

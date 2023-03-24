@@ -60,7 +60,7 @@ class ExchangedAmountTest extends TestCase
         return [
             [["", \TypeError::class]],
             [["sdfse", \TypeError::class]],
-            [[null, \TypeError::class]],
+            [[null, \InvalidArgumentException::class]],
         ];
     }
 }
